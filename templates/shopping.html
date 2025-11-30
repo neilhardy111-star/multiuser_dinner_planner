@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Dinner Planner</title>
+    <title>2-Week Dinner Planner</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -16,16 +16,13 @@
     <div class="meal-card">
         <h2>Week {{ meal.week }} - {{ meal.day }}</h2>
         <h3>{{ meal.name }}</h3>
-
         {% if meal.image %}
         <img src="{{ url_for('static', filename='uploads/' + meal.image) }}" alt="{{ meal.name }}" class="meal-img">
         {% endif %}
-
         <button class="show-ingredients-btn" onclick="toggleIngredients('ing-{{ meal.id }}')">Show Ingredients</button>
         <div class="ingredients-content" id="ing-{{ meal.id }}">
             {{ meal.ingredients }}
         </div>
-
         <div class="instructions">
             <strong>Instructions:</strong>
             <p>{{ meal.instructions }}</p>
