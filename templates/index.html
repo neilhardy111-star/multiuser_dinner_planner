@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<h1>Dinner Planner</h1>
+<a href="/shopping">Shopping List</a> | <a href="/export">Export CSV</a>
+
+<div class="grid">
+{% for m in meals %}
+<div class="card">
+  <h3>{{m.day}} - Week {{m.week}}</h3>
+  <p><b>{{m.name}}</b></p>
+  {% if m.image %}
+    <img src="/static/uploads/{{m.image}}" class="pic">
+  {% endif %}
+  <details>
+    <summary>Ingredients</summary>
+    <ul>
+    {% for i in m.ingredients.split(',') %}
+      <li>{{i}}</li>
+    {% endfor %}
+    </ul>
+  </details>
+  <details>
+    <summary>Instructions</summary>
+    <p>{{m.instructions}}</p>
+  </details>
+</div>
+{% endfor %}
+</div>
+
+<h2>Add Meal</h2>
+<form action="/add" method="POST" enctype="multipart/form-data">
+Week: <input name="week" type="number" min="1" max="2"><br>
+Day: <input name="day"><br>
+Meal Name: <input name="name"><br>
+Ingredients (comma-separated): <textarea name="ingredients"></textarea><br>
+Instructions: <textarea name="instructions"></textarea><br>
+Image: <input type="file" name="image"><br>
+<button>Add</button>
+</form>
+</body>
+</html>
