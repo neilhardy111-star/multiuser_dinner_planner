@@ -1,26 +1,11 @@
-<head>
-    <meta charset="UTF-8">
-    <title>My Dinner Planner</title>
-    <!-- Link to external CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    
-    <!-- Optional inline CSS -->
-    <style>
-        body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 20px; }
-        .meals-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .meal-card { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .meal-img { max-width: 100%; border-radius: 8px; }
-    </style>
-</head>
-
-
-
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>My Dinner Planner</title>
+    <!-- Link external CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Optional inline CSS -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -126,6 +111,5 @@ function toggleIngredients(id) {
     }
 }
 </script>
-
 </body>
 </html>
