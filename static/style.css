@@ -9,6 +9,7 @@ header {
     color: white;
     padding: 15px;
     text-align: center;
+    position: relative;
 }
 .logout {
     position: absolute;
