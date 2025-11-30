@@ -14,7 +14,6 @@ class User(UserMixin):
         self.id = id
         self.username = username
 
-# For simplicity, a single demo user
 demo_user = User(1, "neilhardy")
 
 @login_manager.user_loader
@@ -42,36 +41,39 @@ def logout():
 @app.route("/shopping")
 @login_required
 def shopping():
-    # Sample meals
-    meals = [
-        {
-            "id": 1,
-            "week": 1,
-            "day": "Monday",
-            "name": "Spaghetti Bolognese",
-            "ingredients": "Spaghetti, Beef, Tomato Sauce",
-            "instructions": "Cook spaghetti. Cook beef. Mix with sauce.",
-            "image": "spaghetti.jpg"
-        },
-        {
-            "id": 2,
-            "week": 1,
-            "day": "Tuesday",
-            "name": "Chicken Salad",
-            "ingredients": "Chicken, Lettuce, Tomato, Dressing",
-            "instructions": "Grill chicken. Chop veggies. Mix.",
-            "image": "salad.jpg"
-        },
-        {
-            "id": 3,
-            "week": 1,
-            "day": "Wednesday",
-            "name": "Vegetable Stir Fry",
-            "ingredients": "Broccoli, Carrots, Bell Pepper, Soy Sauce",
-            "instructions": "Stir fry vegetables with soy sauce.",
-            "image": None
-        }
+    # Sample 2-week meals
+    sample_meals = [
+        {"name": "Spaghetti Bolognese", "ingredients": "Spaghetti, Beef, Tomato Sauce", "instructions": "Cook spaghetti. Cook beef. Mix with sauce.", "image": "spaghetti.jpg"},
+        {"name": "Chicken Salad", "ingredients": "Chicken, Lettuce, Tomato, Dressing", "instructions": "Grill chicken. Chop veggies. Mix.", "image": "salad.jpg"},
+        {"name": "Vegetable Stir Fry", "ingredients": "Broccoli, Carrots, Bell Pepper, Soy Sauce", "instructions": "Stir fry vegetables with soy sauce.", "image": "stirfry.jpg"},
+        {"name": "Chicken Curry", "ingredients": "Chicken, Curry Powder, Coconut Milk", "instructions": "Cook chicken. Add curry powder and coconut milk.", "image": "chickencurry.jpg"},
+        {"name": "Omelette", "ingredients": "Eggs, Cheese, Ham", "instructions": "Beat eggs. Add fillings. Cook.", "image": "omelette.jpg"},
+        {"name": "Tacos", "ingredients": "Taco Shells, Beef, Lettuce, Cheese", "instructions": "Cook beef. Assemble tacos.", "image": "taco.jpg"},
+        {"name": "Pizza", "ingredients": "Dough, Tomato Sauce, Cheese, Toppings", "instructions": "Assemble and bake pizza.", "image": "pizza.jpg"},
+        {"name": "Soup", "ingredients": "Vegetables, Broth", "instructions": "Chop vegetables. Boil in broth.", "image": "soup.jpg"},
+        {"name": "Sandwich", "ingredients": "Bread, Ham, Cheese, Lettuce", "instructions": "Assemble sandwich.", "image": "sandwich.jpg"},
+        {"name": "Lasagna", "ingredients": "Pasta Sheets, Beef, Tomato Sauce, Cheese", "instructions": "Layer ingredients and bake.", "image": "lasagna.jpg"},
+        {"name": "Sushi", "ingredients": "Rice, Nori, Fish, Vegetables", "instructions": "Roll sushi.", "image": "sushi.jpg"},
+        {"name": "Burger", "ingredients": "Buns, Beef Patty, Lettuce, Tomato", "instructions": "Cook patty. Assemble burger.", "image": "burger.jpg"},
+        {"name": "Quiche", "ingredients": "Pastry, Eggs, Cheese, Vegetables", "instructions": "Mix filling. Bake in pastry.", "image": "quiche.jpg"},
+        {"name": "Pasta Alfredo", "ingredients": "Pasta, Cream, Cheese", "instructions": "Cook pasta. Add sauce.", "image": "pasta.jpg"},
     ]
+
+    # Assign meals to 2 weeks, 7 days per week
+    meals = []
+    day_names = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    week = 1
+    meal_id = 1
+    for i in range(14):
+        meal = sample_meals[i % len(sample_meals)].copy()
+        meal["week"] = week
+        meal["day"] = day_names[i % 7]
+        meal["id"] = meal_id
+        meals.append(meal)
+        meal_id += 1
+        if (i+1) % 7 == 0:
+            week += 1
+
     return render_template("shopping.html", meals=meals)
 
 if __name__ == "__main__":
