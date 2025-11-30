@@ -1,15 +1,26 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-<link rel="stylesheet" href="/static/style.css">
+    <title>My Dinner Planner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<h1>Shopping List</h1>
-<ul>
-{% for i in items %}
-  <li>{{i}}</li>
-{% endfor %}
-</ul>
+<h1>Welcome, {{ current_user.username }}!</h1>
+<a href="/logout">Logout</a>
+
+<div class="meals-container">
+    {% for meal in meals %}
+    <div class="meal-card">
+        <h2>Week {{ meal.week }} - {{ meal.day }}</h2>
+        <h3>{{ meal.name }}</h3>
+        <p><strong>Ingredients:</strong> {{ meal.ingredients }}</p>
+        <p><strong>Instructions:</strong> {{ meal.instructions }}</p>
+        {% if meal.image %}
+        <img src="{{ url_for('static', filename='uploads/' + meal.image) }}" alt="{{ meal.name }}" class="meal-img">
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+
 </body>
 </html>
