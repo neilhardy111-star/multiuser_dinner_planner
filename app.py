@@ -1,19 +1,13 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import (
-    LoginManager, UserMixin, login_user,
-    login_required, logout_user, current_user
-)
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
-# Initialize app
 app = Flask(__name__)
-
-# Use environment variable for SECRET_KEY
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", "dev_secret")
 
-# SQLite path inside app folder (writable on Render)
+# SQLite DB
 db_path = os.path.join(os.path.dirname(__file__), "meals.db")
 app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{db_path}"
 app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(__file__), 'static', 'uploads')
@@ -22,7 +16,6 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
-# Ensure upload folder exists
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # Models
@@ -50,7 +43,7 @@ def load_user(uid):
 @login_required
 def index():
     meals = Meal.query.filter_by(user_id=current_user.id).order_by(Meal.week, Meal.id).all()
-    return render_template("index.html", meals=meals)
+    return render_template("shopping.html", meals=meals)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -94,7 +87,6 @@ def add():
 
     file = request.files.get('image')
     filename = None
-
     if file and file.filename:
         filename = file.filename
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
@@ -108,15 +100,12 @@ def add():
         instructions=inst,
         image=filename
     )
-
     db.session.add(m)
     db.session.commit()
     return redirect('/')
 
-# Create DB tables if they don't exist
 with app.app_context():
     db.create_all()
 
-# Run app
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True)
